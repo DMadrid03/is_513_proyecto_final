@@ -1,0 +1,5 @@
+# Ignorar cambios en el archivo pubspec.yaml
+pubspec.yaml
+
+# Ignorar cambios en el archivo pubspec.lock
+pubspec.lock
