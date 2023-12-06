@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_final/src/models/peliculas.dart';
 import 'package:proyecto_final/src/providers/peliculas.dart';
-import 'package:intl/intl.dart';//libreria para darle formato especial a la fecha
-
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart'; //libreria para darle formato especial a la fecha
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -72,15 +72,21 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
+            onPressed: () async {
+              // Borrar preferencias de usuario (token)
+              final prefs = await SharedPreferences.getInstance();
+              prefs.remove('token');
+
+              // Navegar de regreso a la pantalla de inicio de sesión
+              Navigator.pop(context);
             },
           ),
         ],
         title: const Center(
-          child:Text(
-            'THE MOVIE DB',
-            style: TextStyle(
-              color:Color.fromARGB(255, 15, 196, 199),
+            child: Text(
+          'THE MOVIE DB',
+          style: TextStyle(
+              color: Color.fromARGB(255, 15, 196, 199),
               fontSize: 20,
               fontWeight: FontWeight.bold,
               shadows: [
@@ -88,14 +94,12 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.black,
                   offset: Offset(2, 2),
                   blurRadius: 3,
-                ), 
-              ]
-            ),
-          )
-        ),
+                ),
+              ]),
+        )),
       ),
 
-       ///Drawer********************************************
+      ///Drawer********************************************
       drawer: Drawer(
         backgroundColor: Colors.white.withAlpha(240),
         child: ListView(
@@ -114,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                     child: Icon(
                       Icons.person,
                       size: 45,
-                      color: Color.fromARGB(255, 3, 37, 65) ,
+                      color: Color.fromARGB(255, 3, 37, 65),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -129,22 +133,22 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.account_circle_rounded), 
+              leading: const Icon(Icons.account_circle_rounded),
               title: const Text('Tu cuenta'),
               onTap: () {},
             ),
             ListTile(
-              leading: const Icon(Icons.favorite), 
+              leading: const Icon(Icons.favorite),
               title: const Text('Favoritas'),
               onTap: () {},
             ),
             ListTile(
-              leading: const Icon(Icons.update), 
+              leading: const Icon(Icons.update),
               title: const Text('Agregadas recientemente'),
               onTap: () {},
             ),
             ListTile(
-              leading: const Icon(Icons.notifications), 
+              leading: const Icon(Icons.notifications),
               title: const Text('Notificaciones'),
               onTap: () {},
             ),
@@ -153,26 +157,26 @@ class _HomePageState extends State<HomePage> {
               title: const Text('Configuracion'),
               onTap: () {},
             ),
-            
           ],
         ),
       ),
 
       ///Body********************************************
       body: isError
-        ? ErrorWidget(message: 'Error de conexion', onRetry: _loadPeliculas,)
-        : SingleChildScrollView(
-            child: Column(
+          ? ErrorWidget(
+              message: 'Error de conexion',
+              onRetry: _loadPeliculas,
+            )
+          : SingleChildScrollView(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                
                   Container(
                     padding: const EdgeInsets.all(13.0),
-                    color: const Color.fromARGB(255, 4, 56, 88), 
+                    color: const Color.fromARGB(255, 4, 56, 88),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        
                         const Text(
                           'Bienvenidos.',
                           style: TextStyle(
@@ -181,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height:5),
+                        const SizedBox(height: 5),
                         const Text(
                           'Millones de peliculas, y personas por descubrir.Explora ahora.',
                           style: TextStyle(
@@ -189,13 +193,13 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height:15),
-
+                        const SizedBox(height: 15),
                         Row(
                           children: [
                             Expanded(
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(20),
@@ -212,8 +216,8 @@ class _HomePageState extends State<HomePage> {
                             ElevatedButton(
                               onPressed: () {},
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(255, 15, 196, 199)
-                              ),
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 15, 196, 199)),
                               child: const Text(
                                 'Buscar',
                                 style: TextStyle(
@@ -224,7 +228,6 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        
                       ],
                     ),
                   ),
@@ -239,50 +242,51 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-            
+
                   // ListView.builder con las películas
                   NotificationListener<ScrollNotification>(
-                      onNotification: _onNotification,
-                      child: SizedBox(
-                        height: 420,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemCount: peliculas.length + 1,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (index < peliculas.length) {
-                              return ItemPeliculas(peliculas: peliculas[index]);
-                            } else {
-                              return _buildLoader();
-                            }
-                          },
-                        ),
+                    onNotification: _onNotification,
+                    child: SizedBox(
+                      height: 420,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: peliculas.length + 1,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index < peliculas.length) {
+                            return ItemPeliculas(peliculas: peliculas[index]);
+                          } else {
+                            return _buildLoader();
+                          }
+                        },
                       ),
+                    ),
                   ),
                 ],
               ),
-        ),
+            ),
 
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: const Color.fromARGB(255, 3, 37, 65),
-          selectedItemColor: const Color.fromARGB(255, 15, 196, 199),
-          unselectedItemColor: Colors.white,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home,),
-              label: 'Inicio',
-              
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255, 3, 37, 65),
+        selectedItemColor: const Color.fromARGB(255, 15, 196, 199),
+        unselectedItemColor: Colors.white,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.movie),
-              label: 'Peliculas',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.tv),
-              label: 'Series',
-            ),
-          ],
-        ),
+            label: 'Inicio',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.movie),
+            label: 'Peliculas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.tv),
+            label: 'Series',
+          ),
+        ],
+      ),
     );
   }
 
@@ -316,7 +320,8 @@ class ErrorWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error, size: 150, color: Color.fromARGB(255, 4, 56, 88)),
+            const Icon(Icons.error,
+                size: 150, color: Color.fromARGB(255, 4, 56, 88)),
             Text(
               message,
               style: const TextStyle(fontSize: 28),
@@ -343,7 +348,6 @@ class ErrorWidget extends StatelessWidget {
   }
 }
 
-
 class ItemPeliculas extends StatelessWidget {
   const ItemPeliculas({
     Key? key,
@@ -356,73 +360,71 @@ class ItemPeliculas extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(23.0),
-      child: Card( 
+      child: Card(
         elevation: 0,
         child: InkWell(
-          onTap: () {
-            
-          },
-          splashColor: const Color.fromARGB(78, 15, 196, 199), // Color del splash
+          onTap: () {},
+          splashColor:
+              const Color.fromARGB(78, 15, 196, 199), // Color del splash
           splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Image.network(
-                        'https://image.tmdb.org/t/p/w185/${peliculas.posterPath}',
-                        fit: BoxFit.cover,
-                      ),
+            child: Stack(children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Image.network(
+                      'https://image.tmdb.org/t/p/w185/${peliculas.posterPath}',
+                      fit: BoxFit.cover,
                     ),
-                    const SizedBox(height: 30),
-                    Container(
-                      constraints: const BoxConstraints(
-                        maxWidth: 175, 
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            peliculas.title,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis, 
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                  ),
+                  const SizedBox(height: 30),
+                  Container(
+                    constraints: const BoxConstraints(
+                      maxWidth: 175,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          peliculas.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      _formatReleaseDate(peliculas.releaseDate),
-                      style: const TextStyle(
-                        fontSize: 13,
-                      ),
+                  ),
+                  Text(
+                    _formatReleaseDate(peliculas.releaseDate),
+                    style: const TextStyle(
+                      fontSize: 13,
                     ),
-                  ],
-                ),
-                Positioned(
-                  bottom: 98,
-                  left: 10,
-                  child: PorcentajeWidget(porcentaje: peliculas.voteAverage*10),
-                ),
-                const Positioned(
-                  top: 10,
-                  right: 10,
-                  child: CirculoWidget(),
-                ),
-              ]
-            ),
+                  ),
+                ],
+              ),
+              Positioned(
+                bottom: 98,
+                left: 10,
+                child: PorcentajeWidget(porcentaje: peliculas.voteAverage * 10),
+              ),
+              const Positioned(
+                top: 10,
+                right: 10,
+                child: CirculoWidget(),
+              ),
+            ]),
           ),
         ),
       ),
     );
   }
+
   //Funcion para darle formato a la fecha de estreno de las peliculas
   String _formatReleaseDate(DateTime releaseDate) {
     return DateFormat('dd MMM yyyy').format(releaseDate);
@@ -441,7 +443,7 @@ class PorcentajeWidget extends StatelessWidget {
       height: 50,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color:  Color.fromARGB(255, 15, 196, 199), 
+        color: Color.fromARGB(255, 15, 196, 199),
       ),
       child: Center(
         child: Text(
@@ -470,7 +472,7 @@ class CirculoWidget extends StatelessWidget {
         color: Colors.white54,
       ),
       child: InkWell(
-        onTap:() {}, 
+        onTap: () {},
         child: const Center(
           child: Icon(
             size: 25,
