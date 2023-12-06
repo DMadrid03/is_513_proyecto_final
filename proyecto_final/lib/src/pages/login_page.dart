@@ -36,14 +36,14 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Error inicio de secion"),
-          content: const Text("Correo o contraseña incorrecto"),
-          actions: <Widget>[
+          title: const Text("Error Inicio de sesión",style: TextStyle(color: Color.fromARGB(255, 3, 37, 65)),),
+          content: const Text("Correo o contraseña incorrectos"),
+          actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("Aceptar"),
+              child: const Text("Aceptar", style: TextStyle(color:Color.fromARGB(255, 15, 196, 199))),
             ),
           ],
         );
@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 //boton registrarse
                                 //VERIFICO
-                                if (_emailController.text.isEmpty) {
+                                if (_emailController.text.isEmpty || _passwordController.text.isEmpty ) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       action: SnackBarAction(
@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                                       showCloseIcon: true,
                                       duration: const Duration(seconds: 5),
                                       content: const Text(
-                                          'El usuario es obligatorio'),
+                                          'El usuario y contraseña obligatorios'),
                                     ),
                                   );
 
@@ -203,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     //Botones "Olvide la contraseña y registrarme"
 
-                    //Olivde la contrasñe
+                    //Olivde la contraseña
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -221,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         //datos
 
-                        //Boton Registraeme
+                        //Boton Registrarme
                         TextButton(
                             onPressed: () {},
                             child: const Text(
@@ -240,6 +240,7 @@ class _LoginPageState extends State<LoginPage> {
                         "O continuar con ",
                         style: TextStyle(
                           fontSize: 16,
+                          color: Color.fromARGB(255, 3, 37, 65),
                         ),
                       ),
                     ),
