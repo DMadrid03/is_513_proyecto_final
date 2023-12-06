@@ -51,33 +51,58 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void _errordialog2(String error) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error de Conexion",style: TextStyle(color: Color.fromARGB(255, 3, 37, 65)),),
+          content: const Text("Revise su conexion a internet"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Reintentar", style: TextStyle(color:Color.fromARGB(255, 15, 196, 199))),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void saveUsuario() async {
-    final header = {"Content-type": "application/json; charset=utf-8"};
+    try{
+      final header = {"Content-type": "application/json; charset=utf-8"};
 
-    final usuario = {
-      "username": _emailController.text,
-      "password": _passwordController.text,
-    };
+      final usuario = {
+        "username": _emailController.text,
+        "password": _passwordController.text,
+      };
 
-    final respuesta =
-        await http.post(url, headers: header, body: jsonEncode(usuario));
+      final respuesta =
+          await http.post(url, headers: header, body: jsonEncode(usuario));
 
-    if (respuesta.statusCode == 200) {
-      final token = jsonDecode(respuesta.body)['token'];
+      if (respuesta.statusCode == 200) {
+        final token = jsonDecode(respuesta.body)['token'];
 
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', token);
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', token);
 
-//limpia controladores
+        //limpia controladores
+        _emailController.clear();
+        _passwordController.clear();
 
-      _emailController.clear();
-      _passwordController.clear();
-
-      //navega a la ruta home
-      Navigator.pushNamed(context, '/home');
-    } else {
-      _errordialog("Correo o Contraseña incorrecto");
-    } //fin else
+         //navega a la ruta home
+        Navigator.pushNamed(context, '/home');
+      } else {
+        _errordialog("Correo o Contraseña incorrecto");
+      }
+     //fin else
+    }catch (e) {
+      
+      _errordialog2("Error de red: $e");
+    }
   }
 
   //final future
@@ -166,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 //boton registrarse
                                 //VERIFICO
-                                if (_emailController.text.isEmpty || _passwordController.text.isEmpty ) {
+                                if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       action: SnackBarAction(
