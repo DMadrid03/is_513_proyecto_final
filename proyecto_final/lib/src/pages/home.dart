@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_final/src/models/peliculas.dart';
+import 'package:proyecto_final/src/pages/detalle.dart';
 import 'package:proyecto_final/src/providers/peliculas.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart'; //libreria para darle formato especial a la fecha
@@ -363,7 +364,14 @@ class ItemPeliculas extends StatelessWidget {
       child: Card(
         elevation: 0,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetallePelicula(pelicula: peliculas),
+              ),
+            );
+          },
           splashColor:
               const Color.fromARGB(78, 15, 196, 199), // Color del splash
           splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
