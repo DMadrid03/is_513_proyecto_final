@@ -12,6 +12,32 @@ class DetallePelicula extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 3, 37, 65),
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+            },
+          ),
+        ],
+        title: const Center(
+          child:Text(
+            'THE MOVIE DB',
+            style: TextStyle(
+              color:Color.fromARGB(255, 15, 196, 199),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                Shadow(
+                  color: Colors.black,
+                  offset: Offset(2, 2),
+                  blurRadius: 3,
+                ), 
+              ]
+            ),
+          )
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -20,13 +46,14 @@ class DetallePelicula extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  height: 650,
+                  height: 800,
                   color: const Color.fromARGB(255, 4, 56, 88),
                 ),
                 Positioned(
                   child: Column(
                     children: 
                     [ 
+                      //Imagen de fondo de pelicula
                       Opacity(
                         opacity: 0.4,
                         child: Image.network(
@@ -36,51 +63,204 @@ class DetallePelicula extends StatelessWidget {
                           width: double.infinity,
                         ),
                       ),
+
+                      //Texto y datos de la pelicula
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
+                            //Titulo y año
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  pelicula.title,
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white, 
+                                Container(
+                                  constraints: const BoxConstraints(
+                                  maxWidth: 250, 
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        pelicula.title,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis, 
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 const SizedBox(width:8), 
+                                Flexible(
+                                  child: Text(
+                                    '(${_formatReleaseDate1(pelicula.releaseDate)})',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16,),
+                            
+                            //Puntaje y Ver trailer
+                            Row(
+                              children: [
+                                Container(
+                                      width: 50,
+                                      height: 50,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:  Color.fromARGB(255, 15, 196, 199), 
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '${(pelicula.voteAverage * 10).toStringAsFixed(0)}%',
+                                          style: const TextStyle(
+                                            color: Color.fromARGB(255, 3, 37, 65),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                ),
+                                const SizedBox(width: 8),
+                                Container(
+                                  constraints: const BoxConstraints(
+                                  maxWidth: 150, 
+                                  ),
+                                  child: const Text(
+                                      'Puntuacion de usuario',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis, 
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white, 
+                                      ),
+                                  ),
+                                ),
+                                const Row(
+                                  children: [
+                                    Icon(Icons.play_arrow_rounded, size: 35,color: Color.fromARGB(255, 15, 196, 199),),
+                                    Text('Ver trailer', style: TextStyle( fontSize:15, color: Colors.white),),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 13,),
+                            
+                          ],
+                        ),
+                      ),
+                      
+                      //Fecha y generos
+                      Container(
+                        height: 65,
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            top: BorderSide(color: Color.fromARGB(54, 255, 255, 255), width: 1.0), // Línea de borde arriba
+                            bottom: BorderSide(color: Color.fromARGB(54, 255, 255, 255), width: 1.0), // Línea de borde abajo
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    _formatReleaseDate2(pelicula.releaseDate),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                ],
+                              ), 
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      //Sinopsis y Director escritor
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            const Row(
+                              children: [
                                 Text(
-                                  '(${_formatReleaseDate(pelicula.releaseDate)})',
-                                  style: const TextStyle(
+                                  'Vista general',
+                                  style: TextStyle(
                                     fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                   ),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 8,),
-                            const Row(
+                            Container(
+                              constraints: const BoxConstraints(
+                                maxWidth: 400, 
+                              ),
+                              child: Text(
+                                pelicula.overview,
+                                maxLines: 8,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20,),
+
+                            const Column(
                               children: [
-                                Text(
-                                    'Puntuacion de usuario',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white, 
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Director:', 
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
                                     ),
+                                  ],
+                                ),
+                                SizedBox(height: 20,),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Escritor:', 
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
-                            ),
+                            )
                           ],
                         ),
                       ),
+
                     ]
                   ),
                 ),
+
                 Positioned(
                   top: 30, 
                   left: 18, 
@@ -94,20 +274,21 @@ class DetallePelicula extends StatelessWidget {
                     ),
                   ),
                 ),
+
               ]
             ),
 
 
-            //SOLO PARA RELLENAR POR MIENTRAS AQUI DEBERIAN IR LOS ACTORES 
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            //SOLO PARA RELLENAR POR MIENTRAS, AQUI DEBERIAN IR LOS ACTORES 
+            const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    pelicula.title,
-                    style: const TextStyle(
-                      fontSize: 24,
+                    'Reparto principal',
+                    style: TextStyle(
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black, // Color del texto
                     ),
@@ -117,13 +298,38 @@ class DetallePelicula extends StatelessWidget {
               ),
             ),
             //-**********************
+
           ],
         ),
+      ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255, 3, 37, 65),
+        selectedItemColor: const Color.fromARGB(255, 15, 196, 199),
+        unselectedItemColor: Colors.white,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home,),
+            label: 'Inicio',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.movie),
+            label: 'Peliculas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.tv),
+            label: 'Series',
+          ),
+        ],
       ),
     );
   }
 
-  String _formatReleaseDate(DateTime releaseDate) {
+  String _formatReleaseDate1(DateTime releaseDate) {
     return DateFormat('yyyy').format(releaseDate);
+  }
+
+  String _formatReleaseDate2(DateTime releaseDate) {
+    return DateFormat('dd/MM/yyyy').format(releaseDate);
   }
 }

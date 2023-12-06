@@ -21,6 +21,8 @@ class PeliculasProvider {
       queryParameters: {
         'api_key': 'fc6fbb57a0da4c9e2b7f1c733509685a',
         'page': '$_currentPage',  //la pagina actual se le agrega a los parametros de consulta de la API
+        'language': 'es-HN',   //pasarle el parametro para que la respuesta se muestre en español
+        'region': 'HN',        //parametro de la region 
       },
     );
 
