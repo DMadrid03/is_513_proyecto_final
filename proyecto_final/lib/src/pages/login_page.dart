@@ -36,14 +36,34 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Error inicio de secion"),
-          content: const Text("Correo o contraseña incorrecto"),
-          actions: <Widget>[
+          title: const Text("Error Inicio de sesión",style: TextStyle(color: Color.fromARGB(255, 3, 37, 65)),),
+          content: const Text("Correo o contraseña incorrectos"),
+          actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("Aceptar"),
+              child: const Text("Aceptar", style: TextStyle(color:Color.fromARGB(255, 15, 196, 199))),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _errordialog2(String error) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error de Conexion",style: TextStyle(color: Color.fromARGB(255, 3, 37, 65)),),
+          content: const Text("Revise su conexion a internet"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Reintentar", style: TextStyle(color:Color.fromARGB(255, 15, 196, 199))),
             ),
           ],
         );
@@ -52,32 +72,37 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void saveUsuario() async {
-    final header = {"Content-type": "application/json; charset=utf-8"};
+    try{
+      final header = {"Content-type": "application/json; charset=utf-8"};
 
-    final usuario = {
-      "username": _emailController.text,
-      "password": _passwordController.text,
-    };
+      final usuario = {
+        "username": _emailController.text,
+        "password": _passwordController.text,
+      };
 
-    final respuesta =
-        await http.post(url, headers: header, body: jsonEncode(usuario));
+      final respuesta =
+          await http.post(url, headers: header, body: jsonEncode(usuario));
 
-    if (respuesta.statusCode == 200) {
-      final token = jsonDecode(respuesta.body)['token'];
+      if (respuesta.statusCode == 200) {
+        final token = jsonDecode(respuesta.body)['token'];
 
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', token);
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', token);
 
-//limpia controladores
+        //limpia controladores
+        _emailController.clear();
+        _passwordController.clear();
 
-      _emailController.clear();
-      _passwordController.clear();
-
-      //navega a la ruta home
-      Navigator.pushNamed(context, '/home');
-    } else {
-      _errordialog("Correo o Contraseña incorrecto");
-    } //fin else
+         //navega a la ruta home
+        Navigator.pushNamed(context, '/home');
+      } else {
+        _errordialog("Correo o Contraseña incorrecto");
+      }
+     //fin else
+    }catch (e) {
+      
+      _errordialog2("Error de red: $e");
+    }
   }
 
   //final future
@@ -97,13 +122,14 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor:  const Color.fromARGB(255, 3, 37, 65),
           title: const Text(
             'Login',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -119,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                     const Text(
                       "Bienvenido",
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 3, 37, 65)),
                     ),
 
                     //TextField Correo
@@ -132,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: CustomInput(
                             controller: _emailController,
                             hintText: "Nombre de usuario",
-                            icon: Icons.email),
+                            icon: Icons.person),
                       ),
                     ),
 
@@ -158,14 +184,14 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.all(15),
                       child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: const Color.fromARGB(255, 15, 196, 199),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextButton(
                               onPressed: () {
                                 //boton registrarse
                                 //VERIFICO
-                                if (_emailController.text.isEmpty) {
+                                if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       action: SnackBarAction(
@@ -175,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                                       showCloseIcon: true,
                                       duration: const Duration(seconds: 5),
                                       content: const Text(
-                                          'El correo es obligatorio'),
+                                          'El usuario y contraseña obligatorios'),
                                     ),
                                   );
 
@@ -202,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     //Botones "Olvide la contraseña y registrarme"
 
-                    //Olivde la contrasñe
+                    //Olivde la contraseña
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -220,13 +246,14 @@ class _LoginPageState extends State<LoginPage> {
 
                         //datos
 
-                        //Boton Registraeme
+                        //Boton Registrarme
                         TextButton(
                             onPressed: () {},
                             child: const Text(
                               "Registrarme ahora",
                               style: TextStyle(
                                 fontSize: 14,
+                                color: Color.fromARGB(255, 3, 37, 65),
                               ),
                             )),
                       ],
@@ -238,6 +265,7 @@ class _LoginPageState extends State<LoginPage> {
                         "O continuar con ",
                         style: TextStyle(
                           fontSize: 16,
+                          color: Color.fromARGB(255, 3, 37, 65),
                         ),
                       ),
                     ),
