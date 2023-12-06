@@ -6,10 +6,10 @@ import 'package:proyecto_final/src/widgets/input_text_widget.dart';
 
 //para peticiones
 
-void main() => runApp(LoginPage());
+void main() => runApp(const LoginPage());
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.all(10),
                         child: CustomInput(
                             controller: _emailController,
-                            hintText: "Correo",
+                            hintText: "Nombre de usuario",
                             icon: Icons.email),
                       ),
                     ),
@@ -152,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
 
-                    //Boton SingIng
+                    //Boton SingIn
 
                     Padding(
                       padding: const EdgeInsets.all(15),
@@ -184,11 +184,11 @@ class _LoginPageState extends State<LoginPage> {
                                 //navego a la ruta
                                 saveUsuario();
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Container(
+                              child: const Padding(
+                                padding: EdgeInsets.all(10),
+                                child: SizedBox(
                                   width: 250,
-                                  child: const Text(
+                                  child: Text(
                                     "Iniciar Sesión",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
