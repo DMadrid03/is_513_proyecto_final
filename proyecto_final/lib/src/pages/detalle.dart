@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/peliculas.dart';
+import 'package:proyecto_final/src/models/peliculas.dart';
 
 
 class DetallePelicula extends StatelessWidget {
