@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_final/src/models/peliculas.dart';
 import 'package:proyecto_final/src/pages/detalle.dart';
 import 'package:proyecto_final/src/providers/peliculas.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart'; //libreria para darle formato especial a la fecha
+import 'package:intl/intl.dart';//libreria para darle formato especial a la fecha
+import 'package:shared_preferences/shared_preferences.dart'; 
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

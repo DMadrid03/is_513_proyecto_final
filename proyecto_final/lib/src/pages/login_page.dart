@@ -97,13 +97,14 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor:  const Color.fromARGB(255, 3, 37, 65),
           title: const Text(
             'Login',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -119,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                     const Text(
                       "Bienvenido",
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 3, 37, 65)),
                     ),
 
                     //TextField Correo
@@ -132,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: CustomInput(
                             controller: _emailController,
                             hintText: "Nombre de usuario",
-                            icon: Icons.email),
+                            icon: Icons.person),
                       ),
                     ),
 
@@ -158,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.all(15),
                       child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: const Color.fromARGB(255, 15, 196, 199),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextButton(
@@ -175,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                                       showCloseIcon: true,
                                       duration: const Duration(seconds: 5),
                                       content: const Text(
-                                          'El correo es obligatorio'),
+                                          'El usuario es obligatorio'),
                                     ),
                                   );
 
@@ -227,6 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                               "Registrarme ahora",
                               style: TextStyle(
                                 fontSize: 14,
+                                color: Color.fromARGB(255, 3, 37, 65),
                               ),
                             )),
                       ],
