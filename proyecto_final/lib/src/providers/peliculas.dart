@@ -6,7 +6,6 @@ class PeliculasProvider {
   int _currentPage = 1; //variable para manejar el conteo de la pagina actual
   bool _isLoading = false; //Indica el estado de carga de la pagina
   bool _hasMore = true; // Indica si hay más páginas disponibles
- 
 
   Future<List<Pelicula>> getPeliculas() async {
     if (_isLoading || !_hasMore) {
@@ -20,9 +19,11 @@ class PeliculasProvider {
       path: '3/movie/popular',
       queryParameters: {
         'api_key': 'fc6fbb57a0da4c9e2b7f1c733509685a',
-        'page': '$_currentPage',  //la pagina actual se le agrega a los parametros de consulta de la API
-        'language': 'es-HN',   //pasarle el parametro para que la respuesta se muestre en español
-        'region': 'HN',        //parametro de la region 
+        'page':
+            '$_currentPage', //la pagina actual se le agrega a los parametros de consulta de la API
+        'language':
+            'es-HN', //pasarle el parametro para que la respuesta se muestre en español
+        'region': 'HN', //parametro de la region
       },
     );
 
@@ -44,7 +45,8 @@ class PeliculasProvider {
 
       // Verificar si 'results' es nulo o no está presente en la respuesta
       if (bodyJson['results'] == null) {
-        throw Exception('Error: No se encontró la lista de películas en la respuesta');
+        throw Exception(
+            'Error: No se encontró la lista de películas en la respuesta');
       }
 
       // Obteniendo la lista de películas desde la propiedad 'results'
