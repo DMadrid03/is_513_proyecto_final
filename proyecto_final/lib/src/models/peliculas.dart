@@ -1,38 +1,38 @@
 import 'dart:convert';
 
-Peliculas peliculasFromJson(String str) => Peliculas.fromJson(json.decode(str));
+Populares peliculasFromJson(String str) => Populares.fromJson(json.decode(str));
 
-String peliculasToJson(Peliculas data) => json.encode(data.toJson());
+String peliculasToJson(Populares data) => json.encode(data.toJson());
 
-class Peliculas {
+class Populares {
     int page;
-    List<Result> results;
+    List<Pelicula> peliculas;
     int totalPages;
-    int totalResults;
+    int totalPeliculas;
 
-    Peliculas({
+    Populares({
         required this.page,
-        required this.results,
+        required this.peliculas,
         required this.totalPages,
-        required this.totalResults,
+        required this.totalPeliculas,
     });
 
-    factory Peliculas.fromJson(Map<String, dynamic> json) => Peliculas(
+    factory Populares.fromJson(Map<String, dynamic> json) => Populares(
         page: json["page"],
-        results: List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+        peliculas: List<Pelicula>.from(json["results"].map((x) => Pelicula.fromJson(x))),
         totalPages: json["total_pages"],
-        totalResults: json["total_results"],
+        totalPeliculas: json["total_results"],
     );
 
     Map<String, dynamic> toJson() => {
         "page": page,
-        "results": List<dynamic>.from(results.map((x) => x.toJson())),
+        "peliculas": List<dynamic>.from(peliculas.map((x) => x.toJson())),
         "total_pages": totalPages,
-        "total_results": totalResults,
+        "total_peliculas": totalPeliculas,
     };
 }
 
-class Result {
+class Pelicula {
     bool adult;
     String? backdropPath;
     List<int> genreIds;
@@ -48,7 +48,7 @@ class Result {
     double voteAverage;
     int voteCount;
 
-    Result({
+    Pelicula({
         required this.adult,
         required this.backdropPath,
         required this.genreIds,
@@ -65,9 +65,9 @@ class Result {
         required this.voteCount,
     });
 
-    factory Result.fromJson(Map<String, dynamic> json) {
+    factory Pelicula.fromJson(Map<String, dynamic> json) {
         try{
-          return Result(
+          return Pelicula(
             adult: json["adult"] ?? false, // Valor predeterminado si es nulo
             backdropPath: json["backdrop_path"],
             genreIds: List<int>.from(json["genre_ids"] ?? []),
@@ -84,8 +84,8 @@ class Result {
             voteCount: json["vote_count"] ?? 0, 
           );
         }catch(e){
-          print("Error al parsear la fecha: $e"); //codigo innecesario, solo lo use para debugear
-          return Result(
+          //print("Error al parsear la fecha: $e"); //codigo innecesario, solo lo use para debugear
+          return Pelicula(
             adult: json["adult"] ?? false, 
             backdropPath: json["backdrop_path"],
             genreIds: List<int>.from(json["genre_ids"] ?? []),
