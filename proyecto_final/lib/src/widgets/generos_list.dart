@@ -67,6 +67,7 @@ class GenerosText extends StatelessWidget {
               snapshot.data!.map((genero) => genero.name).join(', ');
           return Text(
             generosText,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
                 fontWeight: FontWeight.w400, fontSize: 16, color: Colors.white),
           );

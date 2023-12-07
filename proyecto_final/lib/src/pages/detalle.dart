@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:proyecto_final/src/models/creditos.dart';
 import 'package:proyecto_final/src/models/peliculas.dart';
 import 'package:proyecto_final/src/providers/peliculas.dart';
 import 'package:proyecto_final/src/widgets/generos_list.dart';
@@ -197,7 +198,13 @@ class DetallePelicula extends StatelessWidget {
                               const SizedBox(
                                 height: 5,
                               ),
-                              GenerosText(genreIds: pelicula.genreIds)
+                              Container(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 250,
+                                ),
+                                child:
+                                GenerosText(genreIds: pelicula.genreIds)
+                              )
                             ],
                           ),
                         ],
@@ -239,11 +246,11 @@ class DetallePelicula extends StatelessWidget {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Column(
+                        Column(
                           children: [
                             Row(
                               children: [
-                                Text(
+                                const Text(
                                   'Director:',
                                   style: TextStyle(
                                     fontSize: 18,
@@ -251,14 +258,26 @@ class DetallePelicula extends StatelessWidget {
                                     color: Colors.white,
                                   ),
                                 ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  _getMemberName(
+                                    pelicula.creditos.crew,
+                                    Department.DIRECTING,
+                                    'No disponible',
+                                  ),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Row(
                               children: [
-                                Text(
+                                const Text(
                                   'Escritor:',
                                   style: TextStyle(
                                     fontSize: 18,
@@ -266,6 +285,19 @@ class DetallePelicula extends StatelessWidget {
                                     color: Colors.white,
                                   ),
                                 ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  _getMemberName(
+                                    pelicula.creditos.crew,
+                                    Department.WRITING,
+                                    'No disponible',
+                                  ),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                
                               ],
                             ),
                           ],
@@ -290,24 +322,47 @@ class DetallePelicula extends StatelessWidget {
               ),
             ]),
 
-            //SOLO PARA RELLENAR POR MIENTRAS, AQUI DEBERIAN IR LOS ACTORES
-            const Padding(
-              padding: EdgeInsets.all(16.0),
+            // ACTORES************************************************
+            Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Reparto principal',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black, // Color del texto
+                      color: Colors.black,
                     ),
                   ),
+                  // ignore: unrelated_type_equality_checks
+                  if (pelicula.creditos != {})
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: pelicula.creditos.cast.length, 
+                          itemBuilder: (context, index) {
+                            Cast cast = pelicula.creditos.cast[index]; 
+                            return Card(
+                              child: ListTile(
+                                title: Text(cast.name),
+                                subtitle: Text(cast.character ?? 'Personaje desconocido'), 
+                                // Otros detalles del crédito
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                 ],
               ),
             ),
-            //-**********************
+            //-********************************************
           ],
         ),
       ),
@@ -342,4 +397,14 @@ class DetallePelicula extends StatelessWidget {
   String _formatReleaseDate2(DateTime releaseDate) {
     return DateFormat('dd/MM/yyyy').format(releaseDate);
   }
+}
+
+String _getMemberName(List<Cast>? crew, Department department, String defaultValue) {
+  return crew
+      ?.firstWhere(
+        (crewMember) => crewMember.department == department,
+        orElse: () => Cast(name: defaultValue, adult: false, gender: 0, id: 0, knownForDepartment: Department.CREW, originalName: '', popularity: 0.0, castId: 0, profilePath: "", character: "", creditId: "",),
+      )
+      .name ??
+      defaultValue;
 }

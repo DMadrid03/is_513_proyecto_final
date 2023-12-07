@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:proyecto_final/src/models/creditos.dart';
+
 Populares peliculasFromJson(String str) => Populares.fromJson(json.decode(str));
 
 String peliculasToJson(Populares data) => json.encode(data.toJson());
@@ -48,6 +50,7 @@ class Pelicula {
   bool video;
   double voteAverage;
   int voteCount;
+  Creditos creditos;
 
   Pelicula({
     required this.adult,
@@ -64,6 +67,7 @@ class Pelicula {
     required this.video,
     required this.voteAverage,
     required this.voteCount,
+    required this.creditos,
   });
 
   factory Pelicula.fromJson(Map<String, dynamic> json) {
@@ -85,6 +89,7 @@ class Pelicula {
         video: json["video"] ?? false,
         voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
         voteCount: json["vote_count"] ?? 0,
+        creditos: Creditos.fromJson(json["creditos"] ?? {}),
       );
     } catch (e) {
       //print("Error al parsear la fecha: $e"); //codigo innecesario, solo lo use para debugear
@@ -105,6 +110,7 @@ class Pelicula {
         video: json["video"] ?? false,
         voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
         voteCount: json["vote_count"] ?? 0,
+        creditos: Creditos.fromJson(json["creditos"] ?? {}),
       );
     }
   }
@@ -125,6 +131,7 @@ class Pelicula {
         "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,
+        "creditos": creditos.toJson(), 
       };
 }
 
