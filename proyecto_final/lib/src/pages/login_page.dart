@@ -196,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.all(15),
                       child: Container(
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 15, 196, 199),
+                            color: const Color.fromARGB(255, 3, 37, 65),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextButton(
