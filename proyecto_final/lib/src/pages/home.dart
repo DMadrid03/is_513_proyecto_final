@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_final/src/models/peliculas.dart';
 import 'package:proyecto_final/src/pages/detalle.dart';
+import 'package:proyecto_final/src/providers/creditos.dart';
 import 'package:proyecto_final/src/providers/peliculas.dart';
 import 'package:intl/intl.dart';//libreria para darle formato especial a la fecha
 import 'package:shared_preferences/shared_preferences.dart'; 
@@ -364,7 +365,9 @@ class ItemPeliculas extends StatelessWidget {
       child: Card(
         elevation: 0,
         child: InkWell(
-          onTap: () {
+          onTap: () async {
+            // Obtener los créditos antes de navegar a la página de detalles
+            peliculas.creditos = await CastProvider('fc6fbb57a0da4c9e2b7f1c733509685a').getCreditos(peliculas);
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -388,7 +391,7 @@ class ItemPeliculas extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 35),
                   Container(
                     constraints: const BoxConstraints(
                       maxWidth: 175,

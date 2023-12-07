@@ -6,6 +6,8 @@ class PeliculasProvider {
   int _currentPage = 1; //variable para manejar el conteo de la pagina actual
   bool _isLoading = false; //Indica el estado de carga de la pagina
   bool _hasMore = true; // Indica si hay más páginas disponibles
+  
+  String apikey = 'fc6fbb57a0da4c9e2b7f1c733509685a';
 
   Future<List<Pelicula>> getPeliculas() async {
     if (_isLoading || !_hasMore) {
@@ -18,7 +20,7 @@ class PeliculasProvider {
       host: 'api.themoviedb.org',
       path: '3/movie/popular',
       queryParameters: {
-        'api_key': 'fc6fbb57a0da4c9e2b7f1c733509685a',
+        'api_key': apikey,
         'page':
             '$_currentPage', //la pagina actual se le agrega a los parametros de consulta de la API
         'language':
