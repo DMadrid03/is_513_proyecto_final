@@ -3,7 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import "package:http/http.dart" as http;
 import 'package:flutter/material.dart';
 import 'package:proyecto_final/src/widgets/input_text_widget.dart';
-
+/*
+Por Erick Mendez, subido a: 
+https://github.com/ErickRonaldo811/LoginPage.git
+*/
 //para peticiones
 
 void main() => runApp(const LoginPage());
@@ -36,14 +39,18 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Error Inicio de sesión",style: TextStyle(color: Color.fromARGB(255, 3, 37, 65)),),
+          title: const Text(
+            "Error Inicio de sesión",
+            style: TextStyle(color: Color.fromARGB(255, 3, 37, 65)),
+          ),
           content: const Text("Correo o contraseña incorrectos"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("Aceptar", style: TextStyle(color:Color.fromARGB(255, 15, 196, 199))),
+              child: const Text("Aceptar",
+                  style: TextStyle(color: Color.fromARGB(255, 15, 196, 199))),
             ),
           ],
         );
@@ -56,14 +63,18 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Error de Conexion",style: TextStyle(color: Color.fromARGB(255, 3, 37, 65)),),
+          title: const Text(
+            "Error de Conexion",
+            style: TextStyle(color: Color.fromARGB(255, 3, 37, 65)),
+          ),
           content: const Text("Revise su conexion a internet"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("Reintentar", style: TextStyle(color:Color.fromARGB(255, 15, 196, 199))),
+              child: const Text("Reintentar",
+                  style: TextStyle(color: Color.fromARGB(255, 15, 196, 199))),
             ),
           ],
         );
@@ -72,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void saveUsuario() async {
-    try{
+    try {
       final header = {"Content-type": "application/json; charset=utf-8"};
 
       final usuario = {
@@ -93,14 +104,13 @@ class _LoginPageState extends State<LoginPage> {
         _emailController.clear();
         _passwordController.clear();
 
-         //navega a la ruta home
+        //navega a la ruta home
         Navigator.pushNamed(context, '/home');
       } else {
         _errordialog("Correo o Contraseña incorrecto");
       }
-     //fin else
-    }catch (e) {
-      
+      //fin else
+    } catch (e) {
       _errordialog2("Error de red: $e");
     }
   }
@@ -122,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor:  const Color.fromARGB(255, 3, 37, 65),
+          backgroundColor: const Color.fromARGB(255, 3, 37, 65),
           title: const Text(
             'Login',
             textAlign: TextAlign.center,
@@ -144,8 +154,10 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 25),
                     const Text(
                       "Bienvenido",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 3, 37, 65)),
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 3, 37, 65)),
                     ),
 
                     //TextField Correo
@@ -191,7 +203,8 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 //boton registrarse
                                 //VERIFICO
-                                if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+                                if (_emailController.text.isEmpty ||
+                                    _passwordController.text.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       action: SnackBarAction(
