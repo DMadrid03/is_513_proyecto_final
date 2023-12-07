@@ -4,6 +4,7 @@ import 'package:proyecto_final/src/models/creditos.dart';
 import 'package:proyecto_final/src/models/peliculas.dart';
 import 'package:proyecto_final/src/providers/peliculas.dart';
 import 'package:proyecto_final/src/widgets/generos_list.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class DetallePelicula extends StatelessWidget {
   final Pelicula pelicula;
@@ -326,14 +327,17 @@ class DetallePelicula extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
+                
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Reparto principal',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                 const Center(
+                    child: Text(
+                      'Reparto principal',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 15, 196, 199),
+                      ),
                     ),
                   ),
                   // ignore: unrelated_type_equality_checks
@@ -342,20 +346,44 @@ class DetallePelicula extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 20),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: pelicula.creditos.cast.length, 
-                          itemBuilder: (context, index) {
-                            Cast cast = pelicula.creditos.cast[index]; 
-                            return Card(
-                              child: ListTile(
-                                title: Text(cast.name),
-                                subtitle: Text(cast.character ?? 'Personaje desconocido'), 
-                                // Otros detalles del crédito
-                              ),
-                            );
-                          },
+                        SizedBox(
+                          width: double.infinity,
+                          
+                          child: CarouselSlider.builder(
+                            itemCount: pelicula.creditos.cast.length, 
+                            
+                            options: CarouselOptions(height: 500, autoPlay: true, 
+                            viewportFraction: 0.55, 
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            autoPlayAnimationDuration: const Duration(seconds: 2),
+                            enlargeCenterPage: true
+                            ),
+                            itemBuilder: (context, index, PageViewIndex) {
+                              Cast cast = pelicula.creditos.cast[index]; 
+                              return ClipRRect(
+                                child: SizedBox(
+                                  height: 50,
+                                  child: Column(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image(image: NetworkImage('https://image.tmdb.org/t/p/w185/${cast.profilePath}'),
+                                        fit: BoxFit.cover,),
+                                      ),
+                                      const SizedBox(height: 15,),
+                                      Center(child: Text(cast.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),)),
+                                      const SizedBox(height: 10,),
+                                      Text(cast.character.toString()),
+                                      
+                                      
+                                    ],
+                                  ),
+                                  
+                                  // Otros detalles del crédito
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ],
                     ),
