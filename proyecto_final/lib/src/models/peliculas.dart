@@ -74,7 +74,7 @@ class Pelicula {
     try {
       return Pelicula(
         adult: json["adult"] ?? false, // Valor predeterminado si es nulo
-        backdropPath: json["backdrop_path"],
+        backdropPath: json["backdrop_path"]??"",
         genreIds: List<int>.from(json["genre_ids"] ?? []),
         id: json["id"] ?? 0,
         originalLanguage:

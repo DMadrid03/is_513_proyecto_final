@@ -53,14 +53,20 @@ class DetallePelicula extends StatelessWidget {
                   //Imagen de fondo de pelicula
                   Opacity(
                     opacity: 0.4,
-                    child: Image.network(
-                      'https://image.tmdb.org/t/p/original/${pelicula.backdropPath}',
-                      fit: BoxFit.cover,
-                      height: 210,
-                      width: double.infinity,
-                    ),
+                    child: pelicula.backdropPath != ""
+                      ? Image.network(
+                        'https://image.tmdb.org/t/p/original/${pelicula.backdropPath}',
+                        fit: BoxFit.cover,
+                        height: 210,
+                        width: double.infinity,
+                      ) : Image.asset(
+                          'assets/image_not_found.png',
+                          fit: BoxFit.cover,
+                          height: 210,
+                          width: double.infinity,
+                        ),
                   ),
-
+                  
                   //Texto y datos de la pelicula
                   Padding(
                     padding: const EdgeInsets.all(16.0),
