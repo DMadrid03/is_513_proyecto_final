@@ -42,7 +42,7 @@ class GeneroProvider {
 class GenerosText extends StatelessWidget {
   final List<int> genreIds;
 
-  const GenerosText({required this.genreIds});
+  const GenerosText({super.key, required this.genreIds});
 
   @override
   Widget build(BuildContext context) {

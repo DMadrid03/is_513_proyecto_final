@@ -384,11 +384,14 @@ class ItemPeliculas extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: Image.network(
-                      'https://image.tmdb.org/t/p/w185/${peliculas.posterPath}',
-                      fit: BoxFit.cover,
+                  SizedBox(
+                    height:270,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.network(
+                        'https://image.tmdb.org/t/p/w185/${peliculas.posterPath}',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 35),
