@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:proyecto_final/src/models/creditos.dart';
 import 'package:proyecto_final/src/models/peliculas.dart';
+import 'package:proyecto_final/src/providers/peliculas.dart';
 import 'package:proyecto_final/src/widgets/generos_list.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -357,7 +358,7 @@ class DetallePelicula extends StatelessWidget {
                             autoPlayAnimationDuration: const Duration(seconds: 2),
                             enlargeCenterPage: true
                             ),
-                            itemBuilder: (context, index, pageViewIndex) {
+                            itemBuilder: (context, index, PageViewIndex) {
                               Cast cast = pelicula.creditos.cast[index]; 
                               return ClipRRect(
                                 child: SizedBox(
