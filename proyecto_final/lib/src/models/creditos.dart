@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 Creditos creditosFromJson(String str) => Creditos.fromJson(json.decode(str));
 
 String creditosToJson(Creditos data) => json.encode(data.toJson());
@@ -40,7 +42,7 @@ class Cast {
     String name;
     String originalName;
     double popularity;
-    String profilePath;
+    String? profilePath;
     int? castId;
     String? character;
     String creditId;
@@ -56,7 +58,7 @@ class Cast {
         required this.name,
         required this.originalName,
         required this.popularity,
-        required this.profilePath,
+        this.profilePath,
         required this.castId,
         required this.character,
         required this.creditId,

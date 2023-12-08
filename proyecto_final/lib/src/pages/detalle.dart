@@ -367,8 +367,16 @@ class DetallePelicula extends StatelessWidget {
                                     children: [
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
-                                        child: Image(image: NetworkImage('https://image.tmdb.org/t/p/w185/${cast.profilePath}'),
-                                        fit: BoxFit.cover,),
+                                        child: cast.profilePath !=""
+                                              ? Image.network(
+                                                      'https://image.tmdb.org/t/p/w185/${cast.profilePath}',
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : Image.asset(
+                                                      'assets/image_not_found.png',
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                            
                                       ),
                                       const SizedBox(height: 15,),
                                       Center(child: Text(cast.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),)),
